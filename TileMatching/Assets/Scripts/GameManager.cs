@@ -4,7 +4,6 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public static GameManager gameManager;
-    public List<Transform> flippedTiles = new List<Transform>();
 
     private void Awake() {
         gameManager = this;
@@ -14,8 +13,10 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    public void AddTile(Transform tileTransform) {
-        flippedTiles.Add(tileTransform);
+    public void FourTilesFlipped() {
+        if (TileManager.tileManager.flippedTiles.Count >= 4) {
+            TileManager.tileManager.StartCoroutine("RemoveFlippedTiles");
+        }
     }
 
     public void ResetTiles() {

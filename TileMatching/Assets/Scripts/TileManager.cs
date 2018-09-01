@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class TileManager : MonoBehaviour {
 
-    public static TileManager tileManager;
+    [HideInInspector] public static TileManager tileManager;
+    [HideInInspector] public List<Transform> flippedTiles = new List<Transform>();
+
     public int tileCount;
 
     private GameObject tilePrefab;
-    private List<GameObject> tiles = new List<GameObject>();
-    private List<GameObject> flippedTiles = new List<GameObject>();
 
     private void Awake() {
         tileManager = this;
@@ -27,10 +28,9 @@ public class TileManager : MonoBehaviour {
             ArmorType armorType = Tile.GetRandomArmorType();
             ArmorQuality armorQuality = Tile.GetRandomArmorQuality();
 
-            CreateTile(i, armorType, armorQuality);
-            CreateTile(i + 1, armorType, armorQuality);
-            CreateTile(i + 2, armorType, armorQuality);
-            CreateTile(i + 3, armorType, armorQuality);
+            for (int j = 0; j < 4; j++) {
+                CreateTile(i + j, armorType, armorQuality);
+            }
         }
     }
 
@@ -38,11 +38,27 @@ public class TileManager : MonoBehaviour {
         GameObject tileObj = Instantiate(tilePrefab, transform);
         Tile tile = tileObj.transform.GetComponent<Tile>();
 
+        tile.tileID = i;
         tile.armorType = at;
         tile.armorQuality = aq;
         tile.SetImageSprite(tile.armorQuality, tile.armorType);
+    }
 
-        tiles.Add(tileObj);
+    public void AddFlippedTile(Transform transform) {
+        flippedTiles.Add(transform);
+    }
+
+    public IEnumerator RemoveFlippedTiles() {
+        Tile.enableFlip = false;
+        yield return new WaitForSeconds(1);
+
+        foreach (Transform child in flippedTiles) {
+            child.GetComponent<Tile>().FlipTileDown();
+            yield return new WaitForSeconds(0.15f);
+        }
+
+        flippedTiles.Clear();
+        Tile.enableFlip = true;
     }
 
     public void RandomizeTiles() {

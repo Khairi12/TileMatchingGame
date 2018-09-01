@@ -7,11 +7,14 @@ public enum ArmorQuality { Basic, Cloth, Leather, Chainmail, Iron }
 
 public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
 
+    public static bool enableFlip = true;
+
     public Sprite sprite;
     public ArmorType armorType;
     public ArmorQuality armorQuality;
+    public int tileID;
 
-    private bool isFlipped = true;
+    private bool isFlipped = false;
 
     public void OnPointerEnter(PointerEventData eventData) {
 
@@ -22,25 +25,25 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        if (isFlipped)
+        if (isFlipped || !enableFlip)
             return;
-
+        
         FlipTileUp();
-        GameManager.gameManager.AddTile(transform);
-        // pass tile to gamemanager
-        // prevent fliptiledown() while tile is the only flipped tile
+        TileManager.tileManager.AddFlippedTile(transform);
+        GameManager.gameManager.FourTilesFlipped();
     }
 
     public void FlipTileUp() {
         isFlipped = true;
-        transform.GetChild(1).GetComponent<Image>().sprite = null;
-        transform.GetChild(1).GetComponent<Image>().color = Color.black;
+        transform.GetChild(1).GetComponent<Image>().sprite = sprite;
+        transform.GetChild(1).GetComponent<Image>().color = Color.white;
     }
 
     public void FlipTileDown() {
         isFlipped = false;
-        transform.GetChild(1).GetComponent<Image>().sprite = sprite;
-        transform.GetChild(1).GetComponent<Image>().color = Color.white;
+        transform.GetChild(1).GetComponent<Image>().sprite = null;
+        transform.GetChild(1).GetComponent<Image>().color = Color.black;
+
     }
 
     public void SetImageSprite(ArmorQuality aq, ArmorType at) {
