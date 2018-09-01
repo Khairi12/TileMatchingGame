@@ -1,12 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TileManager : MonoBehaviour {
+
+    public static TileManager tileManager;
     public int tileCount;
 
     private GameObject tilePrefab;
     private List<GameObject> tiles = new List<GameObject>();
+    private List<GameObject> flippedTiles = new List<GameObject>();
+
+    private void Awake() {
+        tileManager = this;
+    }
 
     private void Start() {
         tilePrefab = Resources.Load<GameObject>("Prefabs/Tile");
@@ -16,13 +22,15 @@ public class TileManager : MonoBehaviour {
         AssignTileNeighbors();
     }
 
-    private void CreateTiles() {
-        for (int i = 0; i < tileCount; i += 2) {
+    public void CreateTiles() {
+        for (int i = 0; i < tileCount; i += 4) {
             ArmorType armorType = Tile.GetRandomArmorType();
             ArmorQuality armorQuality = Tile.GetRandomArmorQuality();
 
             CreateTile(i, armorType, armorQuality);
-            CreateTile(i+1, armorType, armorQuality);
+            CreateTile(i + 1, armorType, armorQuality);
+            CreateTile(i + 2, armorType, armorQuality);
+            CreateTile(i + 3, armorType, armorQuality);
         }
     }
 
@@ -37,7 +45,7 @@ public class TileManager : MonoBehaviour {
         tiles.Add(tileObj);
     }
 
-    private void RandomizeTiles() {
+    public void RandomizeTiles() {
         for (int i = 0; i < transform.childCount; i++) {
             transform.GetChild(i).SetSiblingIndex(Random.Range(0, transform.childCount));
         }
@@ -47,4 +55,9 @@ public class TileManager : MonoBehaviour {
         
     }
     
+    public void ClearTiles() {
+        foreach(Transform child in transform) {
+            Destroy(child.gameObject);
+        }
+    }
 }

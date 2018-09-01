@@ -7,17 +7,11 @@ public enum ArmorQuality { Basic, Cloth, Leather, Chainmail, Iron }
 
 public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
 
+    public Sprite sprite;
     public ArmorType armorType;
     public ArmorQuality armorQuality;
-    public Sprite sprite;
-    public int xID;
-    public int yID;
 
-    private bool isFlipped = false;
-
-    private void Start() {
-        
-    }
+    private bool isFlipped = true;
 
     public void OnPointerEnter(PointerEventData eventData) {
 
@@ -28,14 +22,12 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        if (isFlipped) {
-            FlipTileDown();
-        }
-        else {
-            FlipTileUp();
-        }
+        if (isFlipped)
+            return;
 
-        // pass tile information to gamemanager
+        FlipTileUp();
+        GameManager.gameManager.AddTile(transform);
+        // pass tile to gamemanager
         // prevent fliptiledown() while tile is the only flipped tile
     }
 
@@ -54,47 +46,47 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     public void SetImageSprite(ArmorQuality aq, ArmorType at) {
         if (aq == ArmorQuality.Basic) {
             switch (at) {
-                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/sprite" + 20); break;
-                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/sprite" + 1); break;
-                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/sprite" + 10); break;
-                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/sprite" + 0); break;
-                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/sprite" + 15); break;
+                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 20); break;
+                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 1); break;
+                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 10); break;
+                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 0); break;
+                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 15); break;
             }
         }
         else if (aq == ArmorQuality.Chainmail)   {
             switch (at) {
-                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/sprite" + 23); break;
-                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/sprite" + 4); break;
-                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/sprite" + 13); break;
-                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/sprite" + 8); break;
-                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/sprite" + 18); break;
+                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 23); break;
+                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 4); break;
+                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 13); break;
+                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 8); break;
+                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 18); break;
             }
         }
         else if (aq == ArmorQuality.Cloth) {
             switch (at) {
-                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/sprite" + 21); break;
-                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/sprite" + 2); break;
-                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/sprite" + 11); break;
-                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/sprite" + 6); break;
-                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/sprite" + 16); break;
+                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 21); break;
+                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 2); break;
+                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 11); break;
+                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 6); break;
+                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 16); break;
             }
         }
         else if (aq == ArmorQuality.Iron) {
             switch (at) {
-                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/sprite" + 24); break;
-                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/sprite" + 5); break;
-                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/sprite" + 14); break;
-                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/sprite" + 9); break;
-                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/sprite" + 19); break;
+                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 24); break;
+                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 5); break;
+                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 14); break;
+                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 9); break;
+                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 19); break;
             }
         }
         else if (aq == ArmorQuality.Leather) {
             switch (at) {
-                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/sprite" + 22); break;
-                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/sprite" + 3); break;
-                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/sprite" + 12); break;
-                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/sprite" + 7); break;
-                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/sprite" + 17); break;
+                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 22); break;
+                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 3); break;
+                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 12); break;
+                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 7); break;
+                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 17); break;
             }
         }
     }
@@ -111,13 +103,27 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     }
 
     public static ArmorQuality GetRandomArmorQuality() {
-        switch (Random.Range(0, 4)) {
-            case 0: return ArmorQuality.Basic;
-            case 1: return ArmorQuality.Chainmail;
-            case 2: return ArmorQuality.Cloth;
-            case 3: return ArmorQuality.Iron;
-            case 4: return ArmorQuality.Leather;
-            default: return ArmorQuality.Basic;
+        int value = Random.Range(0, 100);
+
+        if (value == 0) {
+            Debug.Log("ultra rare equipment spawn");
+            return ArmorQuality.Iron;
+        }
+        else if (value > 0 && value <= 5) {
+            Debug.Log("rare equipment spawn");
+            return ArmorQuality.Chainmail;
+        }
+        else if (value > 5 && value <= 20) {
+            Debug.Log("uncommon equipment spawn");
+            return ArmorQuality.Leather;
+        }
+        else if (value > 20 && value <= 50) {
+            Debug.Log("common equipment spawn");
+            return ArmorQuality.Cloth;
+        }
+        else {
+            Debug.Log("default equipment spawn");
+            return ArmorQuality.Basic;
         }
     }
 
