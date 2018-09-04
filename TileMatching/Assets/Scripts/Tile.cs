@@ -1,17 +1,43 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
-public enum ArmorType { Helmet, Chest, Leggings, Boots, Gloves }
-public enum ArmorQuality { Basic, Cloth, Leather, Chainmail, Iron }
+public enum TileCategory {
+    Armor,
+    Item,
+    Weapon
+}
+
+public enum TileType {
+    Helmet,
+    Chestplate,
+    Boots,
+    Axe,
+    Sword,
+    Dagger,
+    Hammer,
+    Bow,
+    Wand,
+    Shield
+}
+
+public enum TileQuality {
+    Basic,
+    Common,
+    Uncommon,
+    Rare,
+    Legendary
+}
 
 public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
 
     public static bool enableFlip = true;
 
     public Sprite sprite;
-    public ArmorType armorType;
-    public ArmorQuality armorQuality;
+    public TileType tileType;
+    public TileQuality tileQuality;
+    public TileCategory tileCategory;
     public int tileID;
 
     private bool isFlipped = false;
@@ -25,108 +51,179 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        if (isFlipped || !enableFlip)
+        if (!enableFlip) {
             return;
-        
-        FlipTileUp();
-        TileManager.tileManager.AddFlippedTile(transform);
-        GameManager.gameManager.FourTilesFlipped();
+        }
+
+        if (isFlipped) {
+            FlipTileDown();
+            TileManager.Instance.RemoveFlippedTile(transform);
+        }
+        else {
+            FlipTileUp();
+            TileManager.Instance.AddFlippedTile(transform);
+        }
     }
 
     public void FlipTileUp() {
         isFlipped = true;
-        transform.GetChild(1).GetComponent<Image>().sprite = sprite;
-        transform.GetChild(1).GetComponent<Image>().color = Color.white;
+        transform.GetChild(0).GetComponent<Image>().sprite = sprite;
     }
 
     public void FlipTileDown() {
         isFlipped = false;
-        transform.GetChild(1).GetComponent<Image>().sprite = null;
-        transform.GetChild(1).GetComponent<Image>().color = Color.black;
-
+        transform.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/Equipment/Default");
     }
 
-    public void SetImageSprite(ArmorQuality aq, ArmorType at) {
-        if (aq == ArmorQuality.Basic) {
-            switch (at) {
-                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 20); break;
-                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 1); break;
-                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 10); break;
-                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 0); break;
-                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 15); break;
-            }
-        }
-        else if (aq == ArmorQuality.Chainmail)   {
-            switch (at) {
-                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 23); break;
-                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 4); break;
-                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 13); break;
-                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 8); break;
-                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 18); break;
-            }
-        }
-        else if (aq == ArmorQuality.Cloth) {
-            switch (at) {
-                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 21); break;
-                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 2); break;
-                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 11); break;
-                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 6); break;
-                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 16); break;
-            }
-        }
-        else if (aq == ArmorQuality.Iron) {
-            switch (at) {
-                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 24); break;
-                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 5); break;
-                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 14); break;
-                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 9); break;
-                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 19); break;
-            }
-        }
-        else if (aq == ArmorQuality.Leather) {
-            switch (at) {
-                case ArmorType.Boots: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 22); break;
-                case ArmorType.Chest: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 3); break;
-                case ArmorType.Gloves: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 12); break;
-                case ArmorType.Helmet: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 7); break;
-                case ArmorType.Leggings: sprite = Resources.Load<Sprite>("Sprites/Equipment/sprite" + 17); break;
-            }
+    public void SetTileCategory() {
+        switch (tileType) {
+            case TileType.Boots: tileCategory = TileCategory.Armor; break;
+            case TileType.Chestplate: tileCategory = TileCategory.Armor; break;
+            case TileType.Helmet: tileCategory = TileCategory.Armor; break;
+
+            case TileType.Axe: tileCategory = TileCategory.Weapon; break;
+            case TileType.Bow: tileCategory = TileCategory.Weapon; break;
+            case TileType.Dagger: tileCategory = TileCategory.Weapon; break;
+            case TileType.Hammer: tileCategory = TileCategory.Weapon; break;
+            case TileType.Shield: tileCategory = TileCategory.Weapon; break;
+            case TileType.Sword: tileCategory = TileCategory.Weapon; break;
+            case TileType.Wand: tileCategory = TileCategory.Weapon; break;
         }
     }
 
-    public static ArmorType GetRandomArmorType() {
-        switch (Random.Range(0, 4)) {
-            case 0: return ArmorType.Boots;
-            case 1: return ArmorType.Chest;
-            case 2: return ArmorType.Gloves;
-            case 3: return ArmorType.Helmet;
-            case 4: return ArmorType.Leggings;
-            default: return ArmorType.Boots;
+    public void SetTileType() {
+        switch (Random.Range(0, 10)) {
+            case 0: tileType = TileType.Boots; break;
+            case 1: tileType = TileType.Chestplate; break;
+            case 2: tileType = TileType.Helmet; break;
+
+            case 3: tileType = TileType.Axe; break;
+            case 4: tileType = TileType.Bow; break;
+            case 5: tileType = TileType.Dagger; break;
+            case 6: tileType = TileType.Hammer; break;
+            case 7: tileType = TileType.Shield; break;
+            case 8: tileType = TileType.Sword; break;
+            case 9: tileType = TileType.Wand; break;
         }
     }
 
-    public static ArmorQuality GetRandomArmorQuality() {
+    public void SetTileQuality() {
         int value = Random.Range(0, 100);
 
         if (value == 0) {
-            Debug.Log("ultra rare equipment spawn");
-            return ArmorQuality.Iron;
+            tileQuality = TileQuality.Legendary;
         }
         else if (value > 0 && value <= 5) {
-            Debug.Log("rare equipment spawn");
-            return ArmorQuality.Chainmail;
+            tileQuality = TileQuality.Rare;
         }
         else if (value > 5 && value <= 20) {
-            Debug.Log("uncommon equipment spawn");
-            return ArmorQuality.Leather;
+            tileQuality = TileQuality.Uncommon;
         }
         else if (value > 20 && value <= 50) {
-            Debug.Log("common equipment spawn");
-            return ArmorQuality.Cloth;
+            tileQuality = TileQuality.Common;
         }
         else {
-            Debug.Log("default equipment spawn");
-            return ArmorQuality.Basic;
+            tileQuality = TileQuality.Basic;
+        }
+    }
+
+    public void SetTileImage(TileType tt, TileQuality tq) {
+        //------------------------------------------------------------------------------------------------------
+        // Weapon Sprites
+        //------------------------------------------------------------------------------------------------------
+        if (tt == TileType.Axe) {
+            switch (tq) {
+                case TileQuality.Basic: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/AxeI"); return;
+                case TileQuality.Common: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/AxeII"); return;
+                case TileQuality.Uncommon: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/AxeIII"); return;
+                case TileQuality.Rare: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/AxeIV"); return;
+                case TileQuality.Legendary: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/AxeV"); return;
+            }
+        }
+        else if (tt == TileType.Bow) {
+            switch (tq) {
+                case TileQuality.Basic: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/BowI");  return;
+                case TileQuality.Common: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/BowII"); return;
+                case TileQuality.Uncommon: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/BowIII"); return;
+                case TileQuality.Rare: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/BowIV"); return;
+                case TileQuality.Legendary: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/BowV"); return;
+            }
+        }
+        else if (tt == TileType.Dagger) {
+            switch (tq) {
+                case TileQuality.Basic: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/DaggerI"); return;
+                case TileQuality.Common: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/DaggerII"); return;
+                case TileQuality.Uncommon: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/DaggerIII"); return;
+                case TileQuality.Rare: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/DaggerIV"); return;
+                case TileQuality.Legendary: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/DaggerV"); return;
+            }
+        }
+        else if (tt == TileType.Hammer) {
+            switch (tq) {
+                case TileQuality.Basic: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/HammerI"); return;
+                case TileQuality.Common: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/HammerII"); return;
+                case TileQuality.Uncommon: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/HammerIII"); return;
+                case TileQuality.Rare: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/HammerIV"); return;
+                case TileQuality.Legendary: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/HammerV"); return;
+            }
+        }
+        else if (tt == TileType.Shield) {
+            switch (tq) {
+                case TileQuality.Basic: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/ShieldI"); return;
+                case TileQuality.Common: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/ShieldII"); return;
+                case TileQuality.Uncommon: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/ShieldIII"); return;
+                case TileQuality.Rare: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/ShieldIV"); return;
+                case TileQuality.Legendary: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/ShieldV"); return;
+            }
+        }
+        else if (tt == TileType.Sword) {
+            switch (tq) {
+                case TileQuality.Basic: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/SwordI"); return;
+                case TileQuality.Common: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/SwordII"); return;
+                case TileQuality.Uncommon: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/SwordIII"); return;
+                case TileQuality.Rare: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/SwordIV"); return;
+                case TileQuality.Legendary: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/SwordV"); return;
+            }
+        }
+        else if (tt == TileType.Wand) {
+            switch (tq) {
+                case TileQuality.Basic: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/WandsI"); return;
+                case TileQuality.Common: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/WandsII"); return;
+                case TileQuality.Uncommon: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/WandsIII"); return;
+                case TileQuality.Rare: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/WandsIV"); return;
+                case TileQuality.Legendary: sprite = Resources.Load<Sprite>("Sprites/Equipment/Weapons/WandsV"); return;
+            }
+        }
+
+        //------------------------------------------------------------------------------------------------------
+        // Armor Sprites
+        //------------------------------------------------------------------------------------------------------
+        else if (tt == TileType.Boots) {
+            switch (tq) {
+                case TileQuality.Basic: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/BootI"); return;
+                case TileQuality.Common: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/BootII"); return;
+                case TileQuality.Uncommon: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/BootIII"); return;
+                case TileQuality.Rare: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/BootIV"); return;
+                case TileQuality.Legendary: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/BootV"); return;
+            }
+        }
+        else if (tt == TileType.Chestplate) {
+            switch (tq) {
+                case TileQuality.Basic: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/ChestplateI"); return;
+                case TileQuality.Common: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/ChestplateII"); return;
+                case TileQuality.Uncommon: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/ChestplateIII"); return;
+                case TileQuality.Rare: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/ChestplateIV"); return;
+                case TileQuality.Legendary: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/ChestplateV"); return;
+            }
+        }
+        else if (tt == TileType.Helmet) {
+            switch (tq) {
+                case TileQuality.Basic: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/HelmetI"); return;
+                case TileQuality.Common: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/HelmetII"); return;
+                case TileQuality.Uncommon: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/HelmetIII"); return;
+                case TileQuality.Rare: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/HelmetIV"); return;
+                case TileQuality.Legendary: sprite = Resources.Load<Sprite>("Sprites/Equipment/Armor/HelmetV"); return;
+            }
         }
     }
 

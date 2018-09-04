@@ -12,7 +12,6 @@ public class ResetBar : MonoBehaviour {
     private Button coolDownButton;
 
 	private void Start () {
-        tileManager = TileManager.tileManager;
         coolDownButton = transform.GetChild(1).GetComponent<Button>();
         coolDownButton.onClick.AddListener(CoolDownButtonClick);
         coolDownSlider = transform.GetChild(0).GetComponent<Slider>();

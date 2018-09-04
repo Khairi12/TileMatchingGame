@@ -3,16 +3,25 @@ using System.Collections;
 using UnityEngine;
 
 public class TileManager : MonoBehaviour {
+    
+    public static TileManager Instance { get; private set; }
 
-    [HideInInspector] public static TileManager tileManager;
-    [HideInInspector] public List<Transform> flippedTiles = new List<Transform>();
+    public List<Transform> flippedTiles = new List<Transform>();
 
     public int tileCount;
 
     private GameObject tilePrefab;
 
     private void Awake() {
-        tileManager = this;
+        transform.SetParent(transform.root);
+
+        if (Instance == null) {
+            Instance = this;
+            DontDestroyOnLoad(transform.parent.gameObject);
+        }
+        else {
+            Destroy(gameObject);
+        }
     }
 
     private void Start() {
@@ -25,36 +34,47 @@ public class TileManager : MonoBehaviour {
 
     public void CreateTiles() {
         for (int i = 0; i < tileCount; i += 4) {
-            ArmorType armorType = Tile.GetRandomArmorType();
-            ArmorQuality armorQuality = Tile.GetRandomArmorQuality();
-
             for (int j = 0; j < 4; j++) {
-                CreateTile(i + j, armorType, armorQuality);
+                CreateTile(i + j);
             }
         }
     }
 
-    private void CreateTile(int i, ArmorType at, ArmorQuality aq) {
+    private void CreateTile(int i) {
         GameObject tileObj = Instantiate(tilePrefab, transform);
         Tile tile = tileObj.transform.GetComponent<Tile>();
 
+        // design flaw - randomly creates tiles, not in pairs of 4
         tile.tileID = i;
-        tile.armorType = at;
-        tile.armorQuality = aq;
-        tile.SetImageSprite(tile.armorQuality, tile.armorType);
+        tile.SetTileType();
+        tile.SetTileQuality();
+        tile.SetTileCategory();
+        tile.SetTileImage(tile.tileType, tile.tileQuality);
     }
 
-    public void AddFlippedTile(Transform transform) {
-        flippedTiles.Add(transform);
+    public void AddFlippedTile(Transform t) {
+        flippedTiles.Add(t);
+
+        if (ShouldResetFlippedTiles()) {
+            StartCoroutine("ResetFlippedTiles");
+        }
     }
 
-    public IEnumerator RemoveFlippedTiles() {
+    public void RemoveFlippedTile(Transform t) {
+        foreach (Transform flippedTile in flippedTiles) {
+            if (flippedTile == t) {
+                flippedTiles.Remove(flippedTile);
+                break;
+            }
+        }
+    }
+
+    public IEnumerator ResetFlippedTiles() {
         Tile.enableFlip = false;
         yield return new WaitForSeconds(1);
-
+        
         foreach (Transform child in flippedTiles) {
             child.GetComponent<Tile>().FlipTileDown();
-            yield return new WaitForSeconds(0.15f);
         }
 
         flippedTiles.Clear();
@@ -75,5 +95,11 @@ public class TileManager : MonoBehaviour {
         foreach(Transform child in transform) {
             Destroy(child.gameObject);
         }
+
+        flippedTiles.Clear();
+    }
+
+    private bool ShouldResetFlippedTiles() {
+        return flippedTiles.Count >= 4 ? true : false;
     }
 }

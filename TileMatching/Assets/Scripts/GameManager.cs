@@ -13,12 +13,6 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    public void FourTilesFlipped() {
-        if (TileManager.tileManager.flippedTiles.Count >= 4) {
-            TileManager.tileManager.StartCoroutine("RemoveFlippedTiles");
-        }
-    }
-
     public void ResetTiles() {
 
     }
