@@ -969,8 +969,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 486922261}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.46, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 20.46, y: 1.147, z: 0}
+  m_LocalScale: {x: 1, y: 1.148, z: 1}
   m_Children: []
   m_Father: {fileID: 1463019868}
   m_RootOrder: 1
@@ -1010,9 +1010,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 50fc914d9f4cb9a4cad7f3209ba16fbd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4c5236ad1f75fda469e55a235d89187c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 20.48, y: 15.46}
@@ -1725,7 +1725,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.697, y: 0.13440394}
   m_AnchorMax: {x: 0.77900004, y: 0.8848014}
-  m_AnchoredPosition: {x: -12.1, y: -0.23751068}
+  m_AnchoredPosition: {x: -12.099998, y: -0.23751068}
   m_SizeDelta: {x: 1.723938, y: -0.37218666}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &689137707
@@ -1900,6 +1900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a21c96cb8ac97a4dbef7b2694c02198, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationSpeed: 0.1
 --- !u!212 &721360277
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1953,7 +1954,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 721360275}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.453, y: 2.33, z: 99.02}
+  m_LocalPosition: {x: -4.69, y: 2.33, z: 99.02}
   m_LocalScale: {x: 4.4767, y: 6.6484647, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2229,8 +2230,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 951149830}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0, y: 1.147, z: 0}
+  m_LocalScale: {x: 1, y: 1.148, z: 1}
   m_Children: []
   m_Father: {fileID: 1463019868}
   m_RootOrder: 0
@@ -2270,9 +2271,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 50fc914d9f4cb9a4cad7f3209ba16fbd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4c5236ad1f75fda469e55a235d89187c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 20.48, y: 15.46}
@@ -3972,7 +3973,7 @@ GameObject:
   - component: {fileID: 1463019868}
   - component: {fileID: 1463019869}
   m_Layer: 0
-  m_Name: Mountains
+  m_Name: Bushes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3985,7 +3986,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1463019867}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.01, y: 4.02, z: 100.4}
+  m_LocalPosition: {x: -0.01, y: 4.17, z: 100.4}
   m_LocalScale: {x: 0.65659446, y: 0.57365257, z: 1}
   m_Children:
   - {fileID: 951149831}
@@ -4279,7 +4280,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1621163774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4707,7 +4708,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1714325302}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.2, z: 100}
+  m_LocalPosition: {x: 0, y: 2.12, z: 100}
   m_LocalScale: {x: 0.65512073, y: 0.43538392, z: 1}
   m_Children:
   - {fileID: 864187522}
@@ -4726,7 +4727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360076e3426e4364aaea9e1e9baeab1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 4
+  scrollSpeed: 3
 --- !u!1 &1735826401
 GameObject:
   m_ObjectHideFlags: 0
@@ -5521,7 +5522,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2132055774}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.04, y: 2.74, z: 100.2}
+  m_LocalPosition: {x: -0.04, y: 2.78, z: 100.2}
   m_LocalScale: {x: 0.65345997, y: 0.6380976, z: 1}
   m_Children:
   - {fileID: 1655086522}
