@@ -6,6 +6,7 @@ public class TileManager : MonoBehaviour {
     
     public static TileManager Instance { get; private set; }
 
+    public List<Transform> tiles = new List<Transform>();
     public List<Transform> flippedTiles = new List<Transform>();
 
     public int tileCount;
@@ -28,28 +29,34 @@ public class TileManager : MonoBehaviour {
         tilePrefab = Resources.Load<GameObject>("Prefabs/Tile");
 
         CreateTiles();
-        RandomizeTiles();
-        AssignTileNeighbors();
+        //RandomizeTiles();
+        //AssignTileNeighbors();
+
+        //DebugDisplayTileInfo();
     }
 
     public void CreateTiles() {
         for (int i = 0; i < tileCount; i += 4) {
+            TileType tType = Tile.GetRandomTileType();
+            TileQuality tQuality = Tile.GetRandomTileQuality();
+
             for (int j = 0; j < 4; j++) {
-                CreateTile(i + j);
+                CreateTile(i + j, tType, tQuality);
             }
         }
     }
 
-    private void CreateTile(int i) {
+    private void CreateTile(int i, TileType tType, TileQuality tQuality) {
         GameObject tileObj = Instantiate(tilePrefab, transform);
         Tile tile = tileObj.transform.GetComponent<Tile>();
-
-        // design flaw - randomly creates tiles, not in pairs of 4
+        
         tile.tileID = i;
-        tile.SetTileType();
-        tile.SetTileQuality();
+        tile.SetTileType(tType);
+        tile.SetTileQuality(tQuality);
         tile.SetTileCategory();
         tile.SetTileImage(tile.tileType, tile.tileQuality);
+
+        tiles.Add(tileObj.transform);
     }
 
     public void AddFlippedTile(Transform t) {
@@ -101,5 +108,14 @@ public class TileManager : MonoBehaviour {
 
     private bool ShouldResetFlippedTiles() {
         return flippedTiles.Count >= 4 ? true : false;
+    }
+
+    private void DebugDisplayTileInfo() {
+        foreach(Transform child in tiles) {
+            Tile childTile = child.GetComponent<Tile>();
+            Debug.Log("Category: " + childTile.tileCategory + "\n" + 
+                "Type: " + childTile.tileType + "\n" + 
+                "Quality: " + childTile.tileQuality + "\n");
+        }
     }
 }

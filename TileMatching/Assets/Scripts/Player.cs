@@ -13,6 +13,33 @@ public class Player : MonoBehaviour {
         StartCoroutine("Idle");
     }
 
+    private IEnumerator Attack3() {
+        while (true) {
+            for (int i = 0; i < 6; i++) {
+                sprite.sprite = Resources.Load<Sprite>("Sprites/Characters/Player/adventurer-attack3-0" + i);
+                yield return new WaitForSeconds(animationSpeed);
+            }
+        }
+    }
+
+    private IEnumerator Attack2() {
+        while (true) {
+            for (int i = 0; i < 6; i++) {
+                sprite.sprite = Resources.Load<Sprite>("Sprites/Characters/Player/adventurer-attack2-0" + i);
+                yield return new WaitForSeconds(animationSpeed);
+            }
+        }
+    }
+
+    private IEnumerator Attack1() {
+        while (true) {
+            for (int i = 0; i < 5; i++) {
+                sprite.sprite = Resources.Load<Sprite>("Sprites/Characters/Player/adventurer-attack1-0" + i);
+                yield return new WaitForSeconds(animationSpeed);
+            }
+        }
+    }
+
     private IEnumerator Idle() {
         while (true) {
             for (int i = 0; i < 4; i++) {

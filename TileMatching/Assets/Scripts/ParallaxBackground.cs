@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ParallaxBackground : MonoBehaviour {
 
     public float scrollSpeed = 1f;
+    public bool enableScroll = false;
     
     private SpriteRenderer sprite;
     private Vector3 startPosition;
@@ -18,7 +19,9 @@ public class ParallaxBackground : MonoBehaviour {
 	}
 
     private void Update () {
-        float newPosition = Mathf.Repeat(Time.time * scrollSpeed, imageSize);
-        transform.position = startPosition + Vector3.left * newPosition;
+        if (enableScroll) {
+            float newPosition = Mathf.Repeat(Time.time * scrollSpeed, imageSize);
+            transform.position = startPosition + Vector3.left * newPosition;
+        }
 	}
 }

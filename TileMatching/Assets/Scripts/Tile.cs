@@ -91,39 +91,51 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
-    public void SetTileType() {
-        switch (Random.Range(0, 10)) {
-            case 0: tileType = TileType.Boots; break;
-            case 1: tileType = TileType.Chestplate; break;
-            case 2: tileType = TileType.Helmet; break;
+    public void SetTileType(TileType tType) {
+        tileType = tType;
+    }
 
-            case 3: tileType = TileType.Axe; break;
-            case 4: tileType = TileType.Bow; break;
-            case 5: tileType = TileType.Dagger; break;
-            case 6: tileType = TileType.Hammer; break;
-            case 7: tileType = TileType.Shield; break;
-            case 8: tileType = TileType.Sword; break;
-            case 9: tileType = TileType.Wand; break;
+    public static TileType GetRandomTileType() {
+        switch (Random.Range(0, 10)) {
+            // Equipment Tile
+            case 0: return TileType.Boots;
+            case 1: return TileType.Chestplate;
+            case 2: return TileType.Helmet;
+
+            // Weapon Tile
+            case 3: return TileType.Axe;
+            case 4: return TileType.Bow;
+            case 5: return TileType.Dagger;
+            case 6: return TileType.Hammer;
+            case 7: return TileType.Shield;
+            case 8: return TileType.Sword;
+            case 9: return TileType.Wand;
+
+            default: return TileType.Boots;
         }
     }
 
-    public void SetTileQuality() {
+    public void SetTileQuality(TileQuality tQuality) {
+        tileQuality = tQuality;
+    }
+
+    public static TileQuality GetRandomTileQuality() {
         int value = Random.Range(0, 100);
 
         if (value == 0) {
-            tileQuality = TileQuality.Legendary;
+            return TileQuality.Legendary;
         }
         else if (value > 0 && value <= 5) {
-            tileQuality = TileQuality.Rare;
+            return TileQuality.Rare;
         }
         else if (value > 5 && value <= 20) {
-            tileQuality = TileQuality.Uncommon;
+            return TileQuality.Uncommon;
         }
         else if (value > 20 && value <= 50) {
-            tileQuality = TileQuality.Common;
+            return TileQuality.Common;
         }
         else {
-            tileQuality = TileQuality.Basic;
+            return TileQuality.Basic;
         }
     }
 
